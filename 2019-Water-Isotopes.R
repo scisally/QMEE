@@ -5,16 +5,17 @@ rm(list=ls())
 
 library(dplyr)
 library(ggplot2)
-library(dplyr)
+library(plyr)
 library(tidyr)
 
 ## JD: Commands like this don't belong in code, which should run from beginning to end
 ## Comment them out, or type them in console
-## setwd(choose.dir()) # Choose directory
+setwd("C:/users/sally/Google Drive/Kidd Lab/Data/WaterIsotopes") # Home
 df<-read.csv("./2019-Sept-WaterIsotopes.csv")
 
 ## JD: View is also not code
 ## View(df)
+tibble(df)
 str(df)
 
 ## JD: I was not able to run this because I couldn't find the function mapvalues; let's talk later

@@ -8,11 +8,16 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-setwd(choose.dir()) # Choose directory
+## JD: Commands like this don't belong in code, which should run from beginning to end
+## Comment them out, or type them in console
+## setwd(choose.dir()) # Choose directory
 df<-read.csv("./2019-Sept-WaterIsotopes.csv")
-View(df)
+
+## JD: View is also not code
+## View(df)
 str(df)
 
+## JD: I was not able to run this because I couldn't find the function mapvalues; let's talk later
 # 0. Massage Data #
 df<-separate(df, "Sample", c("Site", "Sample"), "919") #Split Sample ID
 df$Site<-as.factor(df$Site)

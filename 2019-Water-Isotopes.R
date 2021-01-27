@@ -1,7 +1,8 @@
 # 2019 Gaspe Water Isotopes  #
 # Kaiying Sally Ju | July 2020
-rm(list=ls())
 
+## JD: Don't do this (Ben has reasons; you can accomplish it by restarting R)
+## rm(list=ls())
 
 library(dplyr)
 library(ggplot2)
@@ -10,7 +11,8 @@ library(tidyr)
 
 ## JD: Commands like this don't belong in code, which should run from beginning to end
 ## Comment them out, or type them in console
-setwd("~/QMEE") # Home
+## JD: Again, don't do this.
+## setwd("~/QMEE") # Home
 df<-read.csv("./2019-Sept-WaterIsotopes.csv")
 
 ## JD: View is also not code
@@ -18,7 +20,7 @@ df<-read.csv("./2019-Sept-WaterIsotopes.csv")
 tibble(df)
 str(df)
 
-## JD: I was not able to run this because I couldn't find the function mapvalues; let's talk later
+## JD: Some of this massaging would be nice to do using tables; we should come back to this
 # 0. Massage Data #
 df<-separate(df, "Sample", c("Site","Rep"), sep="919KKW") #Split Sample ID - unfortunately the easiest way removes 919
 df$Sample<-c("919") # Sample=919 means that it was collected Aug 2019
@@ -39,13 +41,25 @@ df.clean<-df %>% #df.clean is a dataframe without the 3 samples that are contami
   filter(!grepl('NBS', Contaminant)) 
 tibble(head(df.clean, 20))
 
-
 # 1. Explore the data #
 
 
+## JD: Try to use spacing consistently; there's no reason why you keep indenting more after count. I would also wrap this in a print() so people can see why you did it.
 df.clean %>% 
   group_by(Location) %>% 
   dplyr::summarise(
     count=n(),
       Maxd2H = max(d2H),
       Mind2H = min(d2H))
+
+## JD: This is equivalent code
+print(df.clean
+	%>% group_by(Location)
+	%>% dplyr::summarise(
+		count=n(),
+      Maxd2H = max(d2H),
+      Mind2H = min(d2H)
+	)
+)
+
+## Grade 1.9/3

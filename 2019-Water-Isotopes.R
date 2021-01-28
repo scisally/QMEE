@@ -1,65 +1,104 @@
 # 2019 Gaspe Water Isotopes  #
 # Kaiying Sally Ju | July 2020
 
-## JD: Don't do this (Ben has reasons; you can accomplish it by restarting R)
-## rm(list=ls())
+library(tidyverse)
 
-library(dplyr)
-library(ggplot2)
-library(plyr)
-library(tidyr)
-
-## JD: Commands like this don't belong in code, which should run from beginning to end
-## Comment them out, or type them in console
-## JD: Again, don't do this.
-## setwd("~/QMEE") # Home
-df<-read.csv("./2019-Sept-WaterIsotopes.csv")
-
-## JD: View is also not code
-## View(df)
+df<-read.csv("./2019-Sept-WaterIsotopes.csv") 
 tibble(df)
 str(df)
 
-## JD: Some of this massaging would be nice to do using tables; we should come back to this
+siteinfo_table<-read.csv(text="
+Site,Site2,Treatment,Location
+N6,C07,Defoliated,C
+N5,C05,Defoliated,C
+N4,C04,Defoliated,C
+P20,C06,Spray,C
+N2,L11,Defoliated,L
+N1,L09,Defoliated,L
+S6,U03,Spray,U
+S5,U02,Spray,U
+S4,U01,Defoliated,U
+S3,L08,Spray,L
+S2,L12,Spray,L
+S1,L10,Spray,L", header=T, stringsAsFactors=T)
+
 # 0. Massage Data #
 df<-separate(df, "Sample", c("Site","Rep"), sep="919KKW") #Split Sample ID - unfortunately the easiest way removes 919
 df$Sample<-c("919") # Sample=919 means that it was collected Aug 2019
 df$Site<-as.factor(df$Site)
 df$Sample<-as.factor(df$Sample)
-spray.sites <- c("S5", "S6", "P20", "S3", "S1", "S2") #name the spray sites to add to treatment column
-df$Treatment <- ifelse(df$Site %in% spray.sites, "Spray", "Defoliated") #Add treatment column
-df$Site2 <- mapvalues(df$Site, from=c("S4","S5","S6","N4","N5","P20","N6","S3","N1","S1","N2","S2"), 
-                      to=c("U01","U02","U03","C04","C05","C06","C07","L08","L09","L10","L11","L12")) #Add new site names (Site2)
-df <- df %>%  # Add location of sites (U, C, L)
-  separate(Site2, sep=1,into=c("Location"), extra="drop", remove=F) %>% # separate into location (U/C/L) based on site name
-  filter(!grepl('QCD', Rep)) #Remove QC rows (these are QC replicates from the isotope lab)
-# df <- df[c(9,10,8,7,2,3,4,5,6)] # Reorder columns
-df$Location<-as.factor(df$Location)
-df$Location<- factor(df$Location, levels = c("L", "C", "U")) # Order factors
-
-df.clean<-df %>% #df.clean is a dataframe without the 3 samples that are contaminated 
+df.complete<-left_join(df, siteinfo_table, by="Site")
+df.complete <- df.complete %>% #Remove QC rows (these are QC replicates from the isotope lab)
+  filter(!grepl('QCD', Rep))
+df.clean <- df.complete %>% #df.clean is a dataframe without the 3 samples that are contaminated 
   filter(!grepl('NBS', Contaminant)) 
-tibble(head(df.clean, 20))
+df.clean <- df.clean %>% 
+  dplyr::rename(oldName=Site,Site=Site2)
+df.clean <- df.clean %>% 
+  select(Site,oldName,Treatment,Location,Sample,Rep,d2H,d18O,d17O,Contaminant)
 
 # 1. Explore the data #
 
-
 ## JD: Try to use spacing consistently; there's no reason why you keep indenting more after count. I would also wrap this in a print() so people can see why you did it.
-df.clean %>% 
-  group_by(Location) %>% 
+print(df.clean %>%
+  group_by(Location) %>%
   dplyr::summarise(
-    count=n(),
-      Maxd2H = max(d2H),
-      Mind2H = min(d2H))
-
-## JD: This is equivalent code
-print(df.clean
-	%>% group_by(Location)
-	%>% dplyr::summarise(
-		count=n(),
-      Maxd2H = max(d2H),
-      Mind2H = min(d2H)
-	)
-)
+	  count=n(),
+    Maxd2H = max(d2H),
+    Mind2H = min(d2H), .groups="drop"))
 
 ## Grade 1.9/3
+
+# 2. Data Exploration #
+# Compare Spray and Defoliated sites #
+
+df.clean %>%  
+  group_by(Location) %>% 
+  ggplot(aes(x=Site, y=d2H, fill=Location)) + 
+  geom_boxplot() +
+  ggtitle("Water d2H in Spray vs Defoliated sites ")
+
+# Distribution of d2H Isotopes across all sites 
+df.clean %>% 
+  ggplot(aes(d2H)) +
+  geom_histogram(binwidth = 3, fill="lightblue", color="black") +
+  ggtitle("Distribution of d2H Isotopes") +
+  scale_y_continuous(breaks = seq(0, 11, by=1)) 
+
+df.clean %>%  # wrap by Site now
+  ggplot(aes(d2H)) +
+  geom_histogram(binwidth = 3, fill="lightblue", color="black") +
+  ggtitle("Distribution of d2H Isotopes by different sites") +
+  scale_y_continuous(breaks = seq(0, 11, by=1)) +
+  facet_wrap(~Site)
+
+df.clean %>%  # Compare spray vs defoliated sites 
+  ggplot(aes(x=Site, y=d2H, fill=Location)) + 
+  geom_boxplot() +
+  facet_wrap(~Treatment, scale="free_x") +
+  ggtitle("Water d2H in Spray vs Defoliated sites")
+
+df.clean %>% # Distribution of isotopes in different locations
+  ggplot(aes(x=d2H, color=Location, fill=Location)) + 
+  geom_histogram(aes(y=..density..), binwidth=0.8, alpha=0.5, position="identity")+
+  geom_density(alpha=.2) +
+  ggtitle("d2H Distribution density in different locations")
+
+df.clean %>% # Boxplot of d2H values in different locations - Location as factor
+  group_by(Location) %>%
+  mutate(mean_d2H=mean(d2H)) %>% 
+  ggplot(aes(factor(Location),d2H)) + 
+  geom_boxplot(aes(fill=Location)) +
+  scale_x_discrete(labels=c("L" = "Lower", "C" = "Central", "U" = "Upper")) +
+  ggtitle("Water d2H in Central, Upper, and Lower Sites")
+
+# This graph below is my favourite
+df.clean %>%  # Boxplot of d2H values in different locations - individual sites
+  ggplot(aes(x=Site, y=d2H, fill=Location)) + 
+  geom_boxplot() +
+  facet_wrap(~Location, scale="free_x") +
+  ggtitle("Water d2H in Central, Upper, and Lower Sites")
+
+
+
+

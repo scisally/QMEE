@@ -52,6 +52,9 @@ print(df.clean %>%
 # 2. Data Exploration #
 # Compare Spray and Defoliated sites #
 
+str(df.clean)
+summary(df.clean)
+
 df.clean %>%  
   group_by(Location) %>% 
   ggplot(aes(x=Site, y=d2H, fill=Location)) + 
@@ -71,34 +74,5 @@ df.clean %>%  # wrap by Site now
   ggtitle("Distribution of d2H Isotopes by different sites") +
   scale_y_continuous(breaks = seq(0, 11, by=1)) +
   facet_wrap(~Site)
-
-df.clean %>%  # Compare spray vs defoliated sites 
-  ggplot(aes(x=Site, y=d2H, fill=Location)) + 
-  geom_boxplot() +
-  facet_wrap(~Treatment, scale="free_x") +
-  ggtitle("Water d2H in Spray vs Defoliated sites")
-
-df.clean %>% # Distribution of isotopes in different locations
-  ggplot(aes(x=d2H, color=Location, fill=Location)) + 
-  geom_histogram(aes(y=..density..), binwidth=0.8, alpha=0.5, position="identity")+
-  geom_density(alpha=.2) +
-  ggtitle("d2H Distribution density in different locations")
-
-df.clean %>% # Boxplot of d2H values in different locations - Location as factor
-  group_by(Location) %>%
-  mutate(mean_d2H=mean(d2H)) %>% 
-  ggplot(aes(factor(Location),d2H)) + 
-  geom_boxplot(aes(fill=Location)) +
-  scale_x_discrete(labels=c("L" = "Lower", "C" = "Central", "U" = "Upper")) +
-  ggtitle("Water d2H in Central, Upper, and Lower Sites")
-
-# This graph below is my favourite
-df.clean %>%  # Boxplot of d2H values in different locations - individual sites
-  ggplot(aes(x=Site, y=d2H, fill=Location)) + 
-  geom_boxplot() +
-  facet_wrap(~Location, scale="free_x") +
-  ggtitle("Water d2H in Central, Upper, and Lower Sites")
-
-
 
 

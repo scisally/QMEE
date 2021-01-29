@@ -27,14 +27,12 @@ df<-separate(df, "Sample", c("Site","Rep"), sep="919KKW") #Split Sample ID - unf
 df$Sample<-c("919") # Sample=919 means that it was collected Aug 2019
 df$Site<-as.factor(df$Site)
 df$Sample<-as.factor(df$Sample)
-df.complete<-left_join(df, siteinfo_table, by="Site")
-df.complete <- df.complete %>% #Remove QC rows (these are QC replicates from the isotope lab)
-  filter(!grepl('QCD', Rep))
-df.clean <- df.complete %>% #df.clean is a dataframe without the 3 samples that are contaminated 
-  filter(!grepl('NBS', Contaminant)) 
-df.clean <- df.clean %>% 
-  dplyr::rename(oldName=Site,Site=Site2)
-df.clean <- df.clean %>% 
+df.complete <- df %>% 
+  left_join(siteinfo_table, by="Site")
+df.clean <- df.complete %>% 
+  filter(!grepl('QCD', Rep)) %>%  # Remove QC rows (these are QC replicates from the isotope lab)
+  filter(!grepl('NBS', Contaminant)) %>% # Remove contaminated samples
+  dplyr::rename(oldName=Site,Site=Site2) %>% 
   select(Site,oldName,Treatment,Location,Sample,Rep,d2H,d18O,d17O,Contaminant)
 
 # 1. Explore the data #

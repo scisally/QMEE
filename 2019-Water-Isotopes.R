@@ -24,6 +24,7 @@ S1,L10,Spray,L", header=T, stringsAsFactors=T)
 
 # 0. Massage Data #
 df<-separate(df, "Sample", c("Site","Rep"), sep="919KKW") #Split Sample ID - unfortunately the easiest way removes 919
+# I'm not sure how to get the separated pieces to become factors.. 
 df$Sample<-c("919") # Sample=919 means that it was collected Aug 2019
 df$Site<-as.factor(df$Site)
 df$Sample<-as.factor(df$Sample)

@@ -10,4 +10,6 @@ In a population of 100 people
 - 5% of the 99 MMV-free people will test positive, so about 5 people will test positive even though they don't have MMV
 In this population of 100 people, 6 people will test positive, and one out of the 6 has MMV. 
 This is 1/6 people, so the probability of a random person of this population testing positive for MMV is about 16.7%
-There is an 83.3% (100-16.7) chance that my friend has tested positive but does not have the disease. I would tell my friend that there is an 83.3% chance that he has tested positive even though he does not have the disease. 
+There is an 83.3% (100-16.7) chance that my friend has tested positive but does not have the disease. I would tell my friend that there is an 83.3% chance that he has tested positive even though he does not have the disease.
+
+## BMB: good.

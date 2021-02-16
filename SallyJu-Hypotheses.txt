@@ -1,0 +1,16 @@
+2020 Feb 15 
+QMEE Assignment | Sally Ju
+
+
+Water isotope data:
+1. Null hypothesis that the d2H values are the same between all 3 locations (central, upper, and lower). Alternate hypothesis that the d2H values are different between all 3 locations.The graphical exploration of the data strongly indicates that there are differences between the 3 locations. This can be tested using an ANOVA/Kruskall-Wallis test and post-hoc testing to compare d2H between the locations.
+2. Null hypothesis that the d2H values are the same between 2 treatments (defoliated and spray). Alternate hypothesis that the d2H values are different between the treatments. This can be tested using a t-test/Wilcoxin rank-sum test to compare  
+3. Null hypothesis that the d2H values are the same between the 3 sampling trips (919, 820, 920). Alternate hypothesis that the d2H values are different between the treatments. 
+ I cannot specify the direction of the difference a priori because the d2H values for my samples (water samples from streams in the Gaspe region) are not recorded in the literature, and the d2H signature is dependent on environmental factors such as contribution of surface/rain/ground-water and prior fractionation. 
+
+
+2019 Stable isotope data:
+This is data that I have not submitted for the course. It includes the d13C and d15N data for 7 different taxa: 2 fish (Brook trout, Slimy Sculpin) and 5 invertebrates (Rhyacophila, Chloroperlidae, Glossosoma, Parapsyche, Epeorus). The d13C values represent relative contribution from aquatic vs terrestrial carbon food sources (more negative = aquatic, more positive = terrestrial), and the d15N values represent trophic level (more positive = higher trophic level). 
+1. Null hypothesis that the d13C values are the same between the 2 treatments (defoliated and spray). Alternate hypothesis that the d13C values differ between the treatments. One major question in my project is to evaluate whether food webs differ between defoliated and spray sites. I can compare the d13C signature of the different organisms in my 2 treatments using a t-test/Wilcoxin rank-sum test across all 7 taxa. 
+2. Null hypothesis that the d15N values are the same between my 7 taxa. Alternate hypothesis that there are differences in the d15N values in my 7 taxa; namely, that the d15N values will follow fish > invertebrate predators > invertebrate herbivores.
+ A difference in my d15N values will support my hypothesis that the taxa that I am sampling are feeding on distinct trophic levels. Based on my research about the feeding habits of the 7 taxa, I expect there to be at least 3 trophic levels. Furthermore, I can compare the means for each trophic level and the effect size to the enrichment factor in the literature (1.4-3.4 permil d15N) to evaluate food web length in my system. This comparison can be completed using an ANOVA/Kruskal-Wallis test and post-hoc tests to compare the difference in d15N among all 7 taxa

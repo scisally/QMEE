@@ -1,0 +1,13 @@
+Feb 14 2021 
+QMEE Assignment | Sally Ju 
+What we know:
+The rapid MMV test gives a positive result: 100% of the time for people with the virus and 5% of the time for people without the virus
+A certain population has a prevalence of 1%
+
+
+In a population of 100 people
+- 1% prevalence of MMV in the population of 100 people is 1, so there is 1 person here that has the disease, and 99 people do not have MMV
+- 5% of the 99 MMV-free people will test positive, so about 5 people will test positive even though they don't have MMV
+In this population of 100 people, 6 people will test positive, and one out of the 6 has MMV. 
+This is 1/6 people, so the probability of a random person of this population testing positive for MMV is about 16.7%
+There is an 83.3% (100-16.7) chance that my friend has tested positive but does not have the disease. I would tell my friend that there is an 83.3% chance that he has tested positive even though he does not have the disease. 
